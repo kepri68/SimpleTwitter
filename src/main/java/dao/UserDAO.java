@@ -33,7 +33,7 @@ public class UserDAO extends AbstractDao {
     }
 
     //sprawdzenie czy User istnieje
-    public boolean isUserExist(String login, String password) {
+    public boolean isUserValid(String login, String password) {
         Query query = entityManager.createQuery("select count(*) as cnt from User u where u.login = :login and u.password = :password");
         query.setParameter("login", login);
         query.setParameter("password", password);
@@ -76,7 +76,10 @@ public class UserDAO extends AbstractDao {
             currentUser.getFollows().remove(userToStopFollowing);
             saveUser(currentUser);
         }
-
     }
 
+    public List<User> getAllUsers() {
+        TypedQuery typedQuery = entityManager.createQuery("select u from User u", User.class);
+        return typedQuery.getResultList();
+    }
 }
